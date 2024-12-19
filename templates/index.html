@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8">Emoji Library</h1>
+        <p class="text-center mb-8 text-gray-600">Click on any emoji to copy it! Each emoji also has its own API endpoint.</p>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {% for name, char in emojis.items() %}
+            <div class="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-lg transition-shadow cursor-pointer"
+                 onclick="copyEmoji('{{ char }}', '{{ name }}', this)">
+                <div class="text-4xl mb-2">{{ char }}</div>
+                <div class="text-sm text-gray-600 truncate">{{ name }}</div>
+                <div class="text-xs text-gray-400 mt-2">
+                    Copied: <span class="count-{{ name | replace(' ', '_') }}">{{ counts[name] }}</span> times
+                </div>
+                <div class="text-xs mt-2 bg-gray-100 p-1 rounded">
+                    API: /api/emoji/{{ name }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function copyEmoji(emoji, name, element) {
+            navigator.clipboard.writeText(emoji).then(() => {
+                // Visual feedback
+                element.classList.add('bg-green-50');
+                setTimeout(() => {
+                    element.classList.remove('bg-green-50');
+                }, 200);
+
+                // Increment count
+                fetch(`/api/increment/${name}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.querySelectorAll(`.count-${name.replace(' ', '_')}`).forEach(el => {
+                                el.textContent = data.count;
+                            });
+                        }
+                    });
+            });
+        }
+    </script>
+</body>
+</html> 
