@@ -1,12 +1,23 @@
 from flask import Flask, render_template, jsonify
 import sqlite3
 from datetime import datetime
+import os
+
 
 app = Flask(__name__)
 
+# Use Azure's writable directory if available, otherwise use local path
+if 'WEBSITE_SITE_NAME' in os.environ:
+    DB_PATH = os.path.join('/home/data', 'emoji_stats.db')
+else:
+    DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'emoji_stats.db')
+
+# Ensure the directory exists
+os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
 # Database initialization
 def init_db():
-    conn = sqlite3.connect('emoji_stats.db')
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     # Create table for emoji usage counts
     c.execute('''
@@ -34,7 +45,7 @@ def init_db():
     conn.close()
 
 def get_emoji_counts():
-    conn = sqlite3.connect('emoji_stats.db')
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute('SELECT emoji_name, copy_count + api_count as total_count FROM emoji_counts')
     counts = {row[0]: row[1] for row in c.fetchall()}
@@ -42,7 +53,7 @@ def get_emoji_counts():
     return counts
 
 def increment_count(emoji_name, usage_type):
-    conn = sqlite3.connect('emoji_stats.db')
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     if usage_type == 'copy':
         c.execute('UPDATE emoji_counts SET copy_count = copy_count + 1, last_used = ? WHERE emoji_name = ?',
@@ -239,7 +250,7 @@ def increment_emoji_count(emoji_name):
 
 @app.route('/api/stats')
 def get_stats():
-    conn = sqlite3.connect('emoji_stats.db')
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute('''
         SELECT 
