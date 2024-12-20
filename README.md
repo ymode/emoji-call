@@ -6,7 +6,7 @@ A simple and fun way to find, copy, and use emojis! Browse our collection throug
 
 ### Web Interface
 
-1. Visit the website and browse through our emoji collection
+1. Visit [emoji-app.com](https://emoji-app.com) to browse through our emoji collection
 2. Click on any emoji card to instantly copy it to your clipboard
 3. See how many times each emoji has been used
 4. The count updates in real-time when you or others copy the emoji
@@ -19,10 +19,10 @@ Need a specific emoji in your application? Just make a GET request:
 
 ```bash
 # Get a smiling face emoji
-curl http://localhost:5000/api/emoji/smiling%20face
+curl https://emoji-app.com/api/emoji/smiling%20face
 
 # Get a heart emoji
-curl http://localhost:5000/api/emoji/red%20heart
+curl https://emoji-app.com/api/emoji/red%20heart
 ```
 
 Response:
@@ -39,7 +39,7 @@ Response:
 Want to see what's trending? Get the top 10 most used emojis:
 
 ```bash
-curl http://localhost:5000/api/stats
+curl https://emoji-app.com/api/stats
 ```
 
 Response:
@@ -65,10 +65,22 @@ Here are some popular emojis you can try:
 - Objects: "rocket", "camera", "books"
 - And many more!
 
-Just replace the spaces with %20 when using the API:
+Example API usage:
 ```bash
-curl http://localhost:5000/api/emoji/thinking%20face
+curl https://emoji-app.com/api/emoji/thinking%20face
 ```
+
+## API Endpoints
+
+All endpoints are available at `https://emoji-app.com/api/`:
+
+- `GET /emoji/<emoji_name>` - Get a specific emoji by name
+- `GET /stats` - Get top 10 most used emojis with usage statistics
+- `GET /increment/<emoji_name>` - Record a copy event for an emoji
+
+## Rate Limits
+
+The API is free to use with reasonable rate limits. Please contact us if you need higher limits for your application.
 
 ## For Developers
 
