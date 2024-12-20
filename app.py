@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify
 import sqlite3
 from datetime import datetime
 import os
+import random  # Add import for random selection
 
 
 app = Flask(__name__)
@@ -14,69 +15,6 @@ else:
 
 # Ensure the directory exists
 os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-
-# Database initialization
-def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    # Create table for emoji usage counts
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS emoji_counts (
-            emoji_name TEXT PRIMARY KEY,
-            copy_count INTEGER DEFAULT 0,
-            api_count INTEGER DEFAULT 0,
-            last_used TIMESTAMP
-        )
-    ''')
-    # Create table for usage history
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS usage_history (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            emoji_name TEXT,
-            usage_type TEXT,
-            timestamp TIMESTAMP,
-            FOREIGN KEY (emoji_name) REFERENCES emoji_counts (emoji_name)
-        )
-    ''')
-    # Initialize counts for all emojis if they don't exist
-    for emoji_name in EMOJIS.keys():
-        c.execute('INSERT OR IGNORE INTO emoji_counts (emoji_name, copy_count, api_count) VALUES (?, 0, 0)', (emoji_name,))
-    conn.commit()
-    conn.close()
-
-def get_emoji_counts():
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute('SELECT emoji_name, copy_count + api_count as total_count FROM emoji_counts')
-    counts = {row[0]: row[1] for row in c.fetchall()}
-    conn.close()
-    return counts
-
-def increment_count(emoji_name, usage_type):
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    if usage_type == 'copy':
-        c.execute('UPDATE emoji_counts SET copy_count = copy_count + 1, last_used = ? WHERE emoji_name = ?',
-                 (datetime.now(), emoji_name))
-    else:  # api
-        c.execute('UPDATE emoji_counts SET api_count = api_count + 1, last_used = ? WHERE emoji_name = ?',
-                 (datetime.now(), emoji_name))
-    
-    # Record in history
-    c.execute('INSERT INTO usage_history (emoji_name, usage_type, timestamp) VALUES (?, ?, ?)',
-             (emoji_name, usage_type, datetime.now()))
-    
-    conn.commit()
-    
-    # Get updated count
-    if usage_type == 'copy':
-        c.execute('SELECT copy_count FROM emoji_counts WHERE emoji_name = ?', (emoji_name,))
-    else:
-        c.execute('SELECT api_count FROM emoji_counts WHERE emoji_name = ?', (emoji_name,))
-    count = c.fetchone()[0]
-    
-    conn.close()
-    return count
 
 # Manual emoji dictionary
 EMOJIS = {
@@ -216,6 +154,72 @@ EMOJIS = {
     "books": "📚"
 }
 
+# Database initialization
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    # Create table for emoji usage counts
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS emoji_counts (
+            emoji_name TEXT PRIMARY KEY,
+            copy_count INTEGER DEFAULT 0,
+            api_count INTEGER DEFAULT 0,
+            last_used TIMESTAMP
+        )
+    ''')
+    # Create table for usage history
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS usage_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            emoji_name TEXT,
+            usage_type TEXT,
+            timestamp TIMESTAMP,
+            FOREIGN KEY (emoji_name) REFERENCES emoji_counts (emoji_name)
+        )
+    ''')
+    # Initialize counts for all emojis if they don't exist
+    for emoji_name in EMOJIS.keys():
+        c.execute('INSERT OR IGNORE INTO emoji_counts (emoji_name, copy_count, api_count) VALUES (?, 0, 0)', (emoji_name,))
+    conn.commit()
+    conn.close()
+
+# Initialize database on app startup
+init_db()
+
+def get_emoji_counts():
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('SELECT emoji_name, copy_count + api_count as total_count FROM emoji_counts')
+    counts = {row[0]: row[1] for row in c.fetchall()}
+    conn.close()
+    return counts
+
+def increment_count(emoji_name, usage_type):
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    if usage_type == 'copy':
+        c.execute('UPDATE emoji_counts SET copy_count = copy_count + 1, last_used = ? WHERE emoji_name = ?',
+                 (datetime.now(), emoji_name))
+    else:  # api
+        c.execute('UPDATE emoji_counts SET api_count = api_count + 1, last_used = ? WHERE emoji_name = ?',
+                 (datetime.now(), emoji_name))
+    
+    # Record in history
+    c.execute('INSERT INTO usage_history (emoji_name, usage_type, timestamp) VALUES (?, ?, ?)',
+             (emoji_name, usage_type, datetime.now()))
+    
+    conn.commit()
+    
+    # Get updated count
+    if usage_type == 'copy':
+        c.execute('SELECT copy_count FROM emoji_counts WHERE emoji_name = ?', (emoji_name,))
+    else:
+        c.execute('SELECT api_count FROM emoji_counts WHERE emoji_name = ?', (emoji_name,))
+    count = c.fetchone()[0]
+    
+    conn.close()
+    return count
+
 def get_all_emojis():
     return EMOJIS
 
@@ -272,6 +276,15 @@ def get_stats():
     conn.close()
     return jsonify(top_emojis)
 
+@app.route('/api/random')
+def get_random_emoji():
+    emoji_name = random.choice(list(EMOJIS.keys()))
+    count = increment_count(emoji_name, 'api')
+    return jsonify({
+        'emoji': EMOJIS[emoji_name],
+        'name': emoji_name,
+        'count': count
+    })
+
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True) 
