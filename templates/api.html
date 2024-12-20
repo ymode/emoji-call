@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}API Documentation - Emoji Library{% endblock %}
+
+{% block extra_css %}
+<style>
+    .endpoint {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    .endpoint h3 {
+        margin-top: 0;
+        color: #333;
+    }
+    .endpoint p {
+        margin-bottom: 1rem;
+    }
+    pre {
+        background-color: #333;
+        color: #fff;
+        padding: 1rem;
+        border-radius: 4px;
+        overflow-x: auto;
+    }
+    code {
+        font-family: 'Courier New', Courier, monospace;
+    }
+    .method {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-weight: bold;
+        margin-right: 0.5rem;
+    }
+    .get {
+        background-color: #28a745;
+        color: white;
+    }
+    .response {
+        margin-top: 1rem;
+    }
+    .url {
+        color: #007bff;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>API Documentation</h1>
+<p>Access our emoji collection programmatically through our REST API endpoints.</p>
+
+<div class="endpoint">
+    <h3><span class="method get">GET</span> Get a Specific Emoji</h3>
+    <p>Retrieve a specific emoji by its name.</p>
+    <p><span class="url">https://emoji-app.com/api/emoji/{emoji_name}</span></p>
+    <pre><code>curl https://emoji-app.com/api/emoji/smiling%20face</code></pre>
+    <div class="response">
+        <p>Response:</p>
+        <pre><code>{
+    "emoji": "😊",
+    "name": "smiling face",
+    "count": 42
+}</code></pre>
+    </div>
+</div>
+
+<div class="endpoint">
+    <h3><span class="method get">GET</span> Get a Random Emoji</h3>
+    <p>Get a random emoji from our collection.</p>
+    <p><span class="url">https://emoji-app.com/api/random</span></p>
+    <pre><code>curl https://emoji-app.com/api/random</code></pre>
+    <div class="response">
+        <p>Response:</p>
+        <pre><code>{
+    "emoji": "🚀",
+    "name": "rocket",
+    "count": 17
+}</code></pre>
+    </div>
+</div>
+
+<div class="endpoint">
+    <h3><span class="method get">GET</span> View Popular Emojis</h3>
+    <p>Get the top 10 most used emojis with their usage statistics.</p>
+    <p><span class="url">https://emoji-app.com/api/stats</span></p>
+    <pre><code>curl https://emoji-app.com/api/stats</code></pre>
+    <div class="response">
+        <p>Response:</p>
+        <pre><code>[
+    {
+        "emoji": "😊",
+        "name": "smiling face",
+        "copy_count": 42,
+        "api_count": 12,
+        "last_used": "2024-01-01 12:00:00"
+    },
+    // ... more emojis
+]</code></pre>
+    </div>
+</div>
+
+<div class="endpoint">
+    <h3><span class="method get">GET</span> Record Emoji Copy</h3>
+    <p>Record when an emoji is copied from the website.</p>
+    <p><span class="url">https://emoji-app.com/api/increment/{emoji_name}</span></p>
+    <pre><code>curl https://emoji-app.com/api/increment/rocket</code></pre>
+    <div class="response">
+        <p>Response:</p>
+        <pre><code>{
+    "success": true,
+    "count": 18
+}</code></pre>
+    </div>
+</div>
+{% endblock %} 

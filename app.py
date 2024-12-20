@@ -286,5 +286,9 @@ def get_random_emoji():
         'count': count
     })
 
+@app.route('/api-docs')
+def api_docs():
+    return render_template('api.html')
+
 if __name__ == '__main__':
     app.run(debug=True) 
