@@ -6,7 +6,16 @@ import os
 
 app = Flask(__name__)
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'emoji_stats.db')# Database initialization
+# Use Azure's writable directory if available, otherwise use local path
+if 'WEBSITE_SITE_NAME' in os.environ:
+    DB_PATH = os.path.join('/home/data', 'emoji_stats.db')
+else:
+    DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'emoji_stats.db')
+
+# Ensure the directory exists
+os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
+# Database initialization
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
