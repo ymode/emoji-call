@@ -1,4 +1,4 @@
-# Emoji Library
+# Emoji Library 😎
 
 A simple and fun way to find, copy, and use emojis! Browse our collection through the web interface or access emojis programmatically via our API.
 
