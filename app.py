@@ -192,6 +192,9 @@ EMOJIS = {
     "christmas tree": "🎄",
     "flower": "🌸",
     "four leaf clover": "🍀",
+
+    #flags
+    "morocco": "🇲🇦",
     
     # Other
     "rocket": "🚀",
