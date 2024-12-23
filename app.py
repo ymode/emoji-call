@@ -131,6 +131,57 @@ EMOJIS = {
     "flower": "🌸",
     "four leaf clover": "🍀",
     
+    # Flags
+    "flag argentina": "🇦🇷",
+    "flag australia": "🇦🇺",
+    "flag austria": "🇦🇹",
+    "flag belgium": "🇧🇪",
+    "flag brazil": "🇧🇷",
+    "flag canada": "🇨🇦",
+    "flag chile": "🇨🇱",
+    "flag china": "🇨🇳",
+    "flag colombia": "🇨🇴",
+    "flag denmark": "🇩🇰",
+    "flag egypt": "🇪🇬",
+    "flag finland": "🇫🇮",
+    "flag france": "🇫🇷",
+    "flag germany": "🇩🇪",
+    "flag greece": "🇬🇷",
+    "flag hong kong": "🇭🇰",
+    "flag iceland": "🇮🇸",
+    "flag india": "🇮🇳",
+    "flag indonesia": "🇮🇩",
+    "flag ireland": "🇮🇪",
+    "flag israel": "🇮🇱",
+    "flag italy": "🇮🇹",
+    "flag japan": "🇯🇵",
+    "flag malaysia": "🇲🇾",
+    "flag mexico": "🇲🇽",
+    "flag morocco": "🇲🇦",
+    "flag netherlands": "🇳🇱",
+    "flag new zealand": "🇳🇿",
+    "flag nigeria": "🇳🇬",
+    "flag norway": "🇳🇴",
+    "flag pakistan": "🇵🇰",
+    "flag philippines": "🇵🇭",
+    "flag poland": "🇵🇱",
+    "flag portugal": "🇵🇹",
+    "flag russia": "🇷🇺",
+    "flag saudi arabia": "🇸🇦",
+    "flag singapore": "🇸🇬",
+    "flag south africa": "🇿🇦",
+    "flag south korea": "🇰🇷",
+    "flag spain": "🇪🇸",
+    "flag sweden": "🇸🇪",
+    "flag switzerland": "🇨🇭",
+    "flag taiwan": "🇹🇼",
+    "flag thailand": "🇹🇭",
+    "flag turkey": "🇹🇷",
+    "flag uk": "🇬🇧",
+    "flag ukraine": "🇺🇦",
+    "flag usa": "🇺🇸",
+    "flag vietnam": "🇻🇳",
+    
     # Other
     "rocket": "🚀",
     "star": "⭐",
@@ -227,7 +278,11 @@ def get_all_emojis():
 def index():
     emojis = get_all_emojis()
     counts = get_emoji_counts()
-    return render_template('index.html', emojis=emojis, counts=counts)
+    
+    # Sort emojis by total usage count (descending)
+    sorted_emojis = dict(sorted(emojis.items(), key=lambda x: counts.get(x[0], 0), reverse=True))
+    
+    return render_template('index.html', emojis=sorted_emojis, counts=counts)
 
 @app.route('/api/emoji/<emoji_name>')
 def get_emoji(emoji_name):
