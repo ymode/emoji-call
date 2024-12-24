@@ -23,9 +23,12 @@ curl https://emoji-app.com/api/emoji/smiling%20face
 
 # Get a heart emoji
 curl https://emoji-app.com/api/emoji/red%20heart
+
+# Get a random emoji
+curl https://emoji-app.com/api/random
 ```
 
-Response:
+Response for specific or random emoji:
 ```json
 {
     "emoji": "😊",
