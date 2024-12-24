@@ -68,10 +68,22 @@ Here are some popular emojis you can try:
 - Objects: "rocket", "camera", "books"
 - And many more!
 
-Just replace the spaces with %20 when using the API:
+Example API usage:
 ```bash
 curl https://emoji-app.com/api/emoji/thinking%20face
 ```
+
+## API Endpoints
+
+All endpoints are available at `https://emoji-app.com/api/`:
+
+- `GET /emoji/<emoji_name>` - Get a specific emoji by name
+- `GET /stats` - Get top 10 most used emojis with usage statistics
+- `GET /increment/<emoji_name>` - Record a copy event for an emoji
+
+## Rate Limits
+
+The API is free to use with reasonable rate limits. Please contact us if you need higher limits for your application.
 
 ## For Developers
 
