@@ -81,6 +81,11 @@ All endpoints are available at `https://emoji-app.com/api/`:
 - `GET /stats` - Get top 10 most used emojis with usage statistics
 - `GET /increment/<emoji_name>` - Record a copy event for an emoji
 
+# Support
+The best way to support this project is to contribute! But if you would like to buy me a coffee, there is a link below.
+
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/ymode)
+
 ## Rate Limits
 
 The API is free to use with reasonable rate limits. Please contact us if you need higher limits for your application.
