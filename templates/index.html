@@ -3,53 +3,203 @@
 {% block extra_css %}
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <style>
-    /* Override container from base.html for grid layout */
     .container {
         max-width: none !important;
+    }
+    .emoji-card {
+        transition: all 0.2s ease;
+        user-select: none;
+    }
+    .emoji-card:hover {
+        transform: translateY(-2px);
+    }
+    .emoji-card:active {
+        transform: scale(0.97);
+    }
+    .emoji-card.copied {
+        background-color: #d1fae5 !important;
+        box-shadow: 0 0 0 2px #10b981;
+    }
+    .copied-toast {
+        position: fixed;
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100px);
+        background: #10b981;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        z-index: 50;
+        transition: transform 0.3s ease;
+        pointer-events: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .copied-toast.show {
+        transform: translateX(-50%) translateY(0);
+    }
+    .category-btn {
+        transition: all 0.2s ease;
+    }
+    .category-btn.active {
+        background-color: #3b82f6;
+        color: white;
+    }
+    .emoji-hidden {
+        display: none !important;
+    }
+    .search-box:focus {
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+    .count-badge {
+        font-variant-numeric: tabular-nums;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<h1 class="text-4xl font-bold text-center mb-8">Emoji Library</h1>
-<p class="text-center mb-8 text-gray-600">Click on any emoji to copy it! Each emoji also has its own API endpoint.</p>
+<!-- Toast notification -->
+<div id="toast" class="copied-toast">Copied!</div>
 
-<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<h1 class="text-4xl font-bold text-center mb-4">Emoji Library</h1>
+<p class="text-center mb-6 text-gray-600">Click any emoji to copy it to your clipboard</p>
+
+<!-- Search bar -->
+<div class="mb-4 max-w-md mx-auto">
+    <input type="text" id="search" placeholder="Search emojis..."
+           class="search-box w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:border-blue-500 text-lg"
+           autocomplete="off" autofocus>
+</div>
+
+<!-- Category filter -->
+<div class="mb-6 flex flex-wrap justify-center gap-2" id="category-filters">
+    <button class="category-btn active px-3 py-1.5 rounded-full text-sm font-medium bg-gray-200 hover:bg-gray-300" data-category="all">
+        All
+    </button>
+    {% for cat_name in categories.keys() %}
+    <button class="category-btn px-3 py-1.5 rounded-full text-sm font-medium bg-gray-200 hover:bg-gray-300" data-category="{{ cat_name }}">
+        {{ cat_name }}
+    </button>
+    {% endfor %}
+</div>
+
+<!-- Emoji count -->
+<p class="text-center text-sm text-gray-400 mb-4" id="visible-count">Showing {{ emojis | length }} emojis</p>
+
+<!-- Emoji grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3" id="emoji-grid">
     {% for name, char in emojis.items() %}
-    <div class="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-lg transition-shadow cursor-pointer"
-         onclick="copyEmoji('{{ char }}', '{{ name }}', this)">
+    <div class="emoji-card bg-white rounded-lg shadow-md p-4 text-center cursor-pointer"
+         onclick="copyEmoji('{{ char }}', '{{ name }}', this)"
+         data-name="{{ name }}"
+         data-category="{{ emoji_to_category.get(name, 'Other') }}"
+         title="{{ name }}">
         <div class="text-4xl mb-2">{{ char }}</div>
-        <div class="text-sm text-gray-600 truncate">{{ name }}</div>
-        <div class="text-xs text-gray-400 mt-2">
-            Copied: <span class="count-{{ name | replace(' ', '_') }}">{{ counts[name] }}</span> times
-        </div>
-        <div class="text-xs mt-2 bg-gray-100 p-1 rounded">
-            API: /api/emoji/{{ name }}
+        <div class="text-sm text-gray-600 truncate font-medium">{{ name }}</div>
+        <div class="text-xs text-gray-400 mt-1">
+            <span class="count-badge count-{{ name | replace(' ', '-') | replace('&', 'and') }}">{{ counts.get(name, 0) }}</span> copies
         </div>
     </div>
     {% endfor %}
 </div>
 
+<!-- No results message -->
+<div id="no-results" class="hidden text-center py-12 text-gray-500">
+    <div class="text-6xl mb-4">🔍</div>
+    <p class="text-xl">No emojis found</p>
+    <p class="text-sm mt-2">Try a different search term</p>
+</div>
+
 <script>
+    let toastTimeout;
+    const toast = document.getElementById('toast');
+    const searchInput = document.getElementById('search');
+    const grid = document.getElementById('emoji-grid');
+    const noResults = document.getElementById('no-results');
+    const visibleCount = document.getElementById('visible-count');
+    const cards = document.querySelectorAll('.emoji-card');
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    let activeCategory = 'all';
+
+    function showToast(emoji, name) {
+        clearTimeout(toastTimeout);
+        toast.textContent = `${emoji} ${name} copied!`;
+        toast.classList.add('show');
+        toastTimeout = setTimeout(() => toast.classList.remove('show'), 1500);
+    }
+
     function copyEmoji(emoji, name, element) {
         navigator.clipboard.writeText(emoji).then(() => {
-            // Visual feedback
-            element.classList.add('bg-green-50');
-            setTimeout(() => {
-                element.classList.remove('bg-green-50');
-            }, 200);
+            // Visual feedback on card
+            element.classList.add('copied');
+            setTimeout(() => element.classList.remove('copied'), 600);
+
+            // Toast
+            showToast(emoji, name);
 
             // Increment count
-            fetch(`/api/increment/${name}`)
+            fetch(`/api/increment/${encodeURIComponent(name)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        document.querySelectorAll(`.count-${name.replace(' ', '_')}`).forEach(el => {
+                        const cls = `count-${name.replaceAll(' ', '-').replaceAll('&', 'and')}`;
+                        document.querySelectorAll(`.${cls}`).forEach(el => {
                             el.textContent = data.count;
                         });
                     }
-                });
+                })
+                .catch(() => {});
+        }).catch(() => {
+            // Fallback for clipboard failures
+            const textarea = document.createElement('textarea');
+            textarea.value = emoji;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                element.classList.add('copied');
+                setTimeout(() => element.classList.remove('copied'), 600);
+                showToast(emoji, name);
+                fetch(`/api/increment/${encodeURIComponent(name)}`).catch(() => {});
+            } catch (e) {
+                toast.textContent = 'Failed to copy';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 1500);
+            }
+            document.body.removeChild(textarea);
         });
     }
+
+    function filterEmojis() {
+        const query = searchInput.value.toLowerCase().trim();
+        let visibleN = 0;
+
+        cards.forEach(card => {
+            const name = card.dataset.name;
+            const category = card.dataset.category;
+            const matchesSearch = !query || name.includes(query);
+            const matchesCategory = activeCategory === 'all' || category === activeCategory;
+            const visible = matchesSearch && matchesCategory;
+            card.classList.toggle('emoji-hidden', !visible);
+            if (visible) visibleN++;
+        });
+
+        visibleCount.textContent = `Showing ${visibleN} emoji${visibleN !== 1 ? 's' : ''}`;
+        noResults.classList.toggle('hidden', visibleN > 0);
+        grid.classList.toggle('hidden', visibleN === 0);
+    }
+
+    searchInput.addEventListener('input', filterEmojis);
+
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeCategory = btn.dataset.category;
+            filterEmojis();
+        });
+    });
 </script>
-{% endblock %} 
+{% endblock %}

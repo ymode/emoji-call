@@ -205,6 +205,7 @@ EMOJIS = {
     "guyana": "🇬🇾",
     "haiti": "🇭🇹",
     "honduras": "🇭🇳",
+    "hong kong": "🇭🇰",
     "hungary": "🇭🇺",
     "iceland": "🇮🇸",
     "india": "🇮🇳",
@@ -340,57 +341,203 @@ EMOJIS = {
     "checkered flag": "🏁",
     "triangular flag": "🚩",
     
-    # Flags
-    "flag argentina": "🇦🇷",
-    "flag australia": "🇦🇺",
-    "flag austria": "🇦🇹",
-    "flag belgium": "🇧🇪",
-    "flag brazil": "🇧🇷",
-    "flag canada": "🇨🇦",
-    "flag chile": "🇨🇱",
-    "flag china": "🇨🇳",
-    "flag colombia": "🇨🇴",
-    "flag denmark": "🇩🇰",
-    "flag egypt": "🇪🇬",
-    "flag finland": "🇫🇮",
-    "flag france": "🇫🇷",
-    "flag germany": "🇩🇪",
-    "flag greece": "🇬🇷",
-    "flag hong kong": "🇭🇰",
-    "flag iceland": "🇮🇸",
-    "flag india": "🇮🇳",
-    "flag indonesia": "🇮🇩",
-    "flag ireland": "🇮🇪",
-    "flag israel": "🇮🇱",
-    "flag italy": "🇮🇹",
-    "flag japan": "🇯🇵",
-    "flag malaysia": "🇲🇾",
-    "flag mexico": "🇲🇽",
-    "flag morocco": "🇲🇦",
-    "flag netherlands": "🇳🇱",
-    "flag new zealand": "🇳🇿",
-    "flag nigeria": "🇳🇬",
-    "flag norway": "🇳🇴",
-    "flag pakistan": "🇵🇰",
-    "flag philippines": "🇵🇭",
-    "flag poland": "🇵🇱",
-    "flag portugal": "🇵🇹",
-    "flag russia": "🇷🇺",
-    "flag saudi arabia": "🇸🇦",
-    "flag singapore": "🇸🇬",
-    "flag south africa": "🇿🇦",
-    "flag south korea": "🇰🇷",
-    "flag spain": "🇪🇸",
-    "flag sweden": "🇸🇪",
-    "flag switzerland": "🇨🇭",
-    "flag taiwan": "🇹🇼",
-    "flag thailand": "🇹🇭",
-    "flag turkey": "🇹🇷",
-    "flag uk": "🇬🇧",
-    "flag ukraine": "🇺🇦",
-    "flag usa": "🇺🇸",
-    "flag vietnam": "🇻🇳",
-    
+    # Vehicles and Transport
+    "car": "🚗",
+    "taxi": "🚕",
+    "bus": "🚌",
+    "ambulance": "🚑",
+    "fire truck": "🚒",
+    "police car": "🚓",
+    "motorcycle": "🏍️",
+    "bicycle": "🚲",
+    "airplane": "✈️",
+    "helicopter": "🚁",
+    "sailboat": "⛵",
+    "ship": "🚢",
+    "train": "🚆",
+    "metro": "🚇",
+
+    # Buildings and Places
+    "house": "🏠",
+    "office": "🏢",
+    "hospital": "🏥",
+    "school": "🏫",
+    "church": "⛪",
+    "mosque": "🕌",
+    "synagogue": "🕍",
+    "stadium": "🏟️",
+    "castle": "🏰",
+    "tent": "⛺",
+    "statue of liberty": "🗽",
+    "mount fuji": "🗻",
+
+    # Hands and Body
+    "ok hand": "👌",
+    "pinching hand": "🤏",
+    "point up": "☝️",
+    "point right": "👉",
+    "point left": "👈",
+    "point down": "👇",
+    "open hands": "👐",
+    "palms up": "🤲",
+    "fist": "✊",
+    "call me hand": "🤙",
+    "writing hand": "✍️",
+    "nail polish": "💅",
+    "eyes": "👀",
+    "brain": "🧠",
+    "tongue": "👅",
+    "ear": "👂",
+    "nose": "👃",
+    "foot": "🦶",
+    "bone": "🦴",
+    "tooth": "🦷",
+
+    # Clothing and Accessories
+    "glasses": "👓",
+    "sunglasses": "🕶️",
+    "crown": "👑",
+    "top hat": "🎩",
+    "baseball cap": "🧢",
+    "ring": "💍",
+    "handbag": "👜",
+    "backpack": "🎒",
+    "high heel": "👠",
+    "sneaker": "👟",
+    "necktie": "👔",
+    "dress": "👗",
+
+    # Office and Tech
+    "laptop": "💻",
+    "desktop": "🖥️",
+    "keyboard": "⌨️",
+    "printer": "🖨️",
+    "mouse": "🖱️",
+    "phone": "📱",
+    "telephone": "📞",
+    "floppy disk": "💾",
+    "cd": "💿",
+    "tv": "📺",
+    "radio": "📻",
+    "satellite": "📡",
+    "envelope": "✉️",
+    "package": "📦",
+    "clipboard": "📋",
+    "pushpin": "📌",
+    "paperclip": "📎",
+    "scissors": "✂️",
+    "pen": "🖊️",
+    "pencil": "✏️",
+    "calendar": "📅",
+
+    # Symbols
+    "check mark": "✅",
+    "cross mark": "❌",
+    "question mark": "❓",
+    "exclamation mark": "❗",
+    "plus": "➕",
+    "minus": "➖",
+    "multiply": "✖️",
+    "infinity": "♾️",
+    "recycle": "♻️",
+    "peace": "☮️",
+    "yin yang": "☯️",
+    "atom": "⚛️",
+    "radioactive": "☢️",
+    "biohazard": "☣️",
+    "medical symbol": "⚕️",
+    "no entry": "⛔",
+    "prohibited": "🚫",
+    "arrow up": "⬆️",
+    "arrow down": "⬇️",
+    "arrow left": "⬅️",
+    "arrow right": "➡️",
+
+    # Animals
+    "bee": "🐝",
+    "ladybug": "🐞",
+    "snail": "🐌",
+    "turtle": "🐢",
+    "snake": "🐍",
+    "whale": "🐋",
+    "dolphin": "🐬",
+    "shark": "🦈",
+    "eagle": "🦅",
+    "owl": "🦉",
+    "parrot": "🦜",
+    "flamingo": "🦩",
+    "bat": "🦇",
+    "gorilla": "🦍",
+    "fox": "🦊",
+    "deer": "🦌",
+    "hedgehog": "🦔",
+    "squirrel": "🐿️",
+    "rabbit": "🐰",
+    "bear": "🐻",
+    "wolf": "🐺",
+    "horse": "🐴",
+    "crocodile": "🐊",
+    "dinosaur": "🦕",
+    "t-rex": "🦖",
+
+    # Food and Drink
+    "apple": "🍎",
+    "banana": "🍌",
+    "grapes": "🍇",
+    "watermelon": "🍉",
+    "strawberry": "🍓",
+    "cherry": "🍒",
+    "peach": "🍑",
+    "mango": "🥭",
+    "avocado": "🥑",
+    "broccoli": "🥦",
+    "carrot": "🥕",
+    "corn": "🌽",
+    "hot pepper": "🌶️",
+    "egg": "🥚",
+    "cheese": "🧀",
+    "bacon": "🥓",
+    "popcorn": "🍿",
+    "ramen": "🍜",
+    "cookie": "🍪",
+    "chocolate": "🍫",
+    "candy": "🍬",
+    "lollipop": "🍭",
+    "tea": "🍵",
+    "bubble tea": "🧋",
+    "tropical drink": "🍹",
+
+    # Science and Nature
+    "microscope": "🔬",
+    "telescope": "🔭",
+    "test tube": "🧪",
+    "dna": "🧬",
+    "petri dish": "🧫",
+    "magnet": "🧲",
+    "volcano": "🌋",
+    "earth globe": "🌍",
+    "globe americas": "🌎",
+    "globe asia": "🌏",
+    "milky way": "🌌",
+    "comet": "☄️",
+    "ringed planet": "🪐",
+
+    # Music and Entertainment
+    "drum": "🥁",
+    "trumpet": "🎺",
+    "violin": "🎻",
+    "piano": "🎹",
+    "saxophone": "🎷",
+    "ticket": "🎫",
+    "clapper board": "🎬",
+    "video game": "🎮",
+    "joystick": "🕹️",
+    "slot machine": "🎰",
+    "bowling": "🎳",
+    "trophy": "🏆",
+    "medal": "🏅",
+    "first place medal": "🥇",
+
     # Other
     "rocket": "🚀",
     "star": "⭐",
@@ -413,6 +560,39 @@ EMOJIS = {
     "battery": "🔋",
     "books": "📚"
 }
+
+# Category mapping for filtering
+CATEGORIES = {}
+_current_category = "Other"
+import re as _re
+# Parse categories from comments in EMOJIS source
+_source_lines = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app.py')).read().split('\n')
+_in_emojis = False
+for _line in _source_lines:
+    _stripped = _line.strip()
+    if _stripped.startswith('EMOJIS = {'):
+        _in_emojis = True
+        continue
+    if _in_emojis and _stripped == '}':
+        break
+    if _in_emojis and _stripped.startswith('#'):
+        _current_category = _stripped.lstrip('# ').strip()
+        if _current_category not in CATEGORIES:
+            CATEGORIES[_current_category] = []
+    elif _in_emojis and '":' in _stripped:
+        _match = _re.match(r'"([^"]+)"', _stripped)
+        if _match:
+            _name = _match.group(1)
+            if _name in EMOJIS:
+                if _current_category not in CATEGORIES:
+                    CATEGORIES[_current_category] = []
+                CATEGORIES[_current_category].append(_name)
+
+# Build reverse lookup: emoji_name -> category
+EMOJI_TO_CATEGORY = {}
+for _cat, _names in CATEGORIES.items():
+    for _name in _names:
+        EMOJI_TO_CATEGORY[_name] = _cat
 
 # Database initialization
 def init_db():
@@ -470,11 +650,8 @@ def increment_count(emoji_name, usage_type):
     
     conn.commit()
     
-    # Get updated count
-    if usage_type == 'copy':
-        c.execute('SELECT copy_count FROM emoji_counts WHERE emoji_name = ?', (emoji_name,))
-    else:
-        c.execute('SELECT api_count FROM emoji_counts WHERE emoji_name = ?', (emoji_name,))
+    # Get updated combined count (copy + api)
+    c.execute('SELECT copy_count + api_count FROM emoji_counts WHERE emoji_name = ?', (emoji_name,))
     count = c.fetchone()[0]
     
     conn.close()
@@ -487,11 +664,12 @@ def get_all_emojis():
 def index():
     emojis = get_all_emojis()
     counts = get_emoji_counts()
-    
+
     # Sort emojis by total usage count (descending)
     sorted_emojis = dict(sorted(emojis.items(), key=lambda x: counts.get(x[0], 0), reverse=True))
-    
-    return render_template('index.html', emojis=sorted_emojis, counts=counts)
+
+    return render_template('index.html', emojis=sorted_emojis, counts=counts,
+                         categories=CATEGORIES, emoji_to_category=EMOJI_TO_CATEGORY)
 
 @app.route('/api/emoji/<emoji_name>')
 def get_emoji(emoji_name):
